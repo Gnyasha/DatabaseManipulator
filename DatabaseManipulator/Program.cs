@@ -18,24 +18,19 @@ namespace DatabaseManipulator
 {
     class Program
     {
-        static string serverName;
-        static string databaseName ;
+        
         static string path;
-        static string connectionString;
+     
 
         static void Main(string[] args)
         {
             System.Timers.Timer aTimer = new System.Timers.Timer();
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-            aTimer.Interval = 3000;
+            aTimer.Interval = 5000;
             aTimer.Enabled = true;
             Console.WriteLine("Starting...");
 
-
-            serverName = ".";
-            databaseName = "DataManipulator";
             path = @"C:\Users\Goodson\Messages";
-            connectionString = string.Format("Data Source={0};Initial Catalog={1};integrated security=True;MultipleActiveResultSets=True;", serverName, databaseName);
 
             Console.ReadLine();
         }
