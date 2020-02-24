@@ -74,14 +74,14 @@ namespace DatabaseManipulator
 
                     foreach (var item in messages)
                     {
-                        string database = item.Database;
+                       
                         string table = item.Table;
                         string column = item.Column;
                         string value = item.Value;
                        
                         try
                         {
-                            var query = string.Format("insert into {0}.dbo.{1} ({2}) Values ('{3}');", database, table, column, value);
+                            var query = string.Format("insert into {0} ({1}) Values ('{2}');",  table, column, value);
                             db.Database.ExecuteSqlCommand(query);
 
                             receivedUpdate.Status = "Message Processed Successfully";

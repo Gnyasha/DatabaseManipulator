@@ -18,7 +18,6 @@ namespace DatabaseManipulator
 
     public class Entitymessage
     {
-        public string Database { get; set; }
         public string Table { get; set; }
         public string Column { get; set; }
         public string Value { get; set; }
