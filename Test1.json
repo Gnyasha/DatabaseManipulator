@@ -2,20 +2,17 @@
   "data": {
     "EntityMessage": [
       {
-        "Database": "DataManipulator",
-		"Table": "tblUsers",
+        "Table": "tblUsers",
         "Column": "FirstName",
         "Value": "Goodson"
       },
       {
-       "Database": "DataManipulator",
-		"Table": "tblUsers",
+        "Table": "tblUsers",
         "Column": "FirstName",
         "Value": "Nyasha"
       },
       {
-       "Database": "DataManipulator",
-		"Table": "tblUsers",
+        "Table": "tblUsers",
         "Column": "FirstName",
         "Value": "Joseph"
       }
