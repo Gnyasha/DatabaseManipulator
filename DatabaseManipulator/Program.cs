@@ -18,7 +18,10 @@ namespace DatabaseManipulator
 {
     class Program
     {
-        static ManipulatorDbContext db = new ManipulatorDbContext();
+        static string serverName = ".";
+        static string databaseName = "DataManipulator";
+        static string path = @"C:\Users\Goodson\Messages";
+        static string connectionString = string.Format("Data Source={0};Initial Catalog={1};integrated security=True;MultipleActiveResultSets=True;", serverName, databaseName);
 
         static void Main(string[] args)
         {
@@ -26,18 +29,15 @@ namespace DatabaseManipulator
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             aTimer.Interval = 3000;
             aTimer.Enabled = true;
-
             Console.WriteLine("Starting...");
             Console.ReadLine();
         }
-
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
             try
             {
-                //TODO - Make this method asyncronious
-                ReadFiles();
+                ReadFiles();//TODO - Make this method asyncronious
             }
             catch (Exception ex)
             {
@@ -45,61 +45,49 @@ namespace DatabaseManipulator
             }
         }
 
-        private static  void ReadFiles()
+        private static void ReadFiles()
         {
-           //check all files
-            string[] fileArray = Directory.GetFiles(@"C:\Users\Goodson\Messages", "*.json", SearchOption.AllDirectories);
+            //check all files
+            string[] fileArray = Directory.GetFiles(path, "*.json", SearchOption.AllDirectories);
 
-          
             foreach (var file in fileArray)
             {
                 string files = File.ReadAllText(file);
                 string fileName = GetLastParts(file, "\\", 1);
-                var saved = db.tblReceivedMessages.Select(a => a.FileName).ToList();
 
-                if (!saved.Contains(fileName)) //check for new files
+                var jsonData = JsonConvert.DeserializeObject<RootObject>(files);
+
+                var messages = jsonData.data.EntityMessage;
+
+                foreach (var item in messages)
                 {
-                    //Add a new entry of the received or dumped file
-                    tblReceivedMessage receivedMessage = new tblReceivedMessage();
-                    receivedMessage.FileName = fileName;
-                    receivedMessage.ReadDate = DateTime.Now;
-                    db.tblReceivedMessages.Add(receivedMessage);
-                    db.SaveChanges();
+                    string table = item.Table;
+                    string column = item.Column;
+                    string value = item.Value;
 
-                    var receivedUpdate = db.tblReceivedMessages.Where(a => a.FileName == receivedMessage.FileName).FirstOrDefault();
-
-                    var jsonData = JsonConvert.DeserializeObject<RootObject>(files);
-
-                    var messages = jsonData.data.EntityMessage;
-
-                    foreach (var item in messages)
+                    try
                     {
-                       
-                        string table = item.Table;
-                        string column = item.Column;
-                        string value = item.Value;
-                       
-                        try
-                        {
-                            var query = string.Format("insert into {0} ({1}) Values ('{2}');",  table, column, value);
-                            db.Database.ExecuteSqlCommand(query);
 
-                            receivedUpdate.Status = "Message Processed Successfully";
-                            receivedUpdate.Success = true;
+                        var query = string.Format("insert into {0} ({1}) Values ('{2}');", table, column, value);
 
-                        }
-                        catch (Exception)
+                        using (SqlConnection conn = new SqlConnection(connectionString))
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
                         {
-                            receivedUpdate.Status = "An error occured while updating data";
-                            receivedUpdate.Success = false;
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
                         }
-                        db.SaveChanges();
+
+                        Console.WriteLine("Message Processed Successfully");
+
                     }
-                    
-                    db.SaveChanges();
-
+                    catch (Exception)
+                    {
+                        Console.WriteLine("An error occured while updating data");
+                    }
 
                 }
+
                 Console.WriteLine("Message process completed");
 
             }
@@ -112,8 +100,6 @@ namespace DatabaseManipulator
             return string.Join(separator, parts.Skip(parts.Count() - count).Take(count).ToArray());
         }
 
-        
 
-        
     }
 }
