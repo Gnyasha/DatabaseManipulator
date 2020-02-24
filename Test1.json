@@ -1,5 +1,6 @@
 {
   "data": {
+    "ConnectionString": "Data Source=.;Initial Catalog=DataManipulator;Integrated Security=True",
     "EntityMessage": [
       {
         "Table": "tblUsers",
