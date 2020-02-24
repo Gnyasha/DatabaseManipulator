@@ -44,7 +44,7 @@ namespace DatabaseManipulator
         {
             try
             {
-                ReadFiles(connectionString,path);//TODO - Make this method asyncronious
+                ReadFiles(path);//TODO - Make this method asyncronious
             }
             catch (Exception ex)
             {
@@ -52,7 +52,7 @@ namespace DatabaseManipulator
             }
         }
 
-        private static void ReadFiles(string conString, string filePath)
+        private static void ReadFiles(string filePath)
         {
             //check all files
             string[] fileArray = Directory.GetFiles(filePath, "*.json", SearchOption.AllDirectories);
@@ -65,7 +65,7 @@ namespace DatabaseManipulator
                 var jsonData = JsonConvert.DeserializeObject<RootObject>(files);
 
                 var messages = jsonData.data.EntityMessage;
-
+                var connString = jsonData.data.ConnectionString;
                 foreach (var item in messages)
                 {
                     string table = item.Table;
@@ -77,7 +77,7 @@ namespace DatabaseManipulator
 
                         var query = string.Format("insert into {0} ({1}) Values ('{2}');", table, column, value);
 
-                        using (SqlConnection conn = new SqlConnection(conString))
+                        using (SqlConnection conn = new SqlConnection(connString))
                         using (SqlCommand cmd = new SqlCommand(query, conn))
                         {
                             conn.Open();

@@ -14,6 +14,7 @@ namespace DatabaseManipulator
     public class Data
     {
         public Entitymessage[] EntityMessage { get; set; }
+        public string ConnectionString { get; set; }
     }
 
     public class Entitymessage
