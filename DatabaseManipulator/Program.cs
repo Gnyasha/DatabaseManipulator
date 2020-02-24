@@ -18,10 +18,10 @@ namespace DatabaseManipulator
 {
     class Program
     {
-        static string serverName = ".";
-        static string databaseName = "DataManipulator";
-        static string path = @"C:\Users\Goodson\Messages";
-        static string connectionString = string.Format("Data Source={0};Initial Catalog={1};integrated security=True;MultipleActiveResultSets=True;", serverName, databaseName);
+        static string serverName;
+        static string databaseName ;
+        static string path;
+        static string connectionString;
 
         static void Main(string[] args)
         {
@@ -30,6 +30,13 @@ namespace DatabaseManipulator
             aTimer.Interval = 3000;
             aTimer.Enabled = true;
             Console.WriteLine("Starting...");
+
+
+            serverName = ".";
+            databaseName = "DataManipulator";
+            path = @"C:\Users\Goodson\Messages";
+            connectionString = string.Format("Data Source={0};Initial Catalog={1};integrated security=True;MultipleActiveResultSets=True;", serverName, databaseName);
+
             Console.ReadLine();
         }
 
@@ -37,7 +44,7 @@ namespace DatabaseManipulator
         {
             try
             {
-                ReadFiles();//TODO - Make this method asyncronious
+                ReadFiles(connectionString,path);//TODO - Make this method asyncronious
             }
             catch (Exception ex)
             {
@@ -45,10 +52,10 @@ namespace DatabaseManipulator
             }
         }
 
-        private static void ReadFiles()
+        private static void ReadFiles(string conString, string filePath)
         {
             //check all files
-            string[] fileArray = Directory.GetFiles(path, "*.json", SearchOption.AllDirectories);
+            string[] fileArray = Directory.GetFiles(filePath, "*.json", SearchOption.AllDirectories);
 
             foreach (var file in fileArray)
             {
@@ -70,7 +77,7 @@ namespace DatabaseManipulator
 
                         var query = string.Format("insert into {0} ({1}) Values ('{2}');", table, column, value);
 
-                        using (SqlConnection conn = new SqlConnection(connectionString))
+                        using (SqlConnection conn = new SqlConnection(conString))
                         using (SqlCommand cmd = new SqlCommand(query, conn))
                         {
                             conn.Open();
