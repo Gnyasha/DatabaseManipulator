@@ -13,7 +13,6 @@ namespace DatabaseManipulator
         }
 
         public virtual DbSet<tblReceivedMessage> tblReceivedMessages { get; set; }
-        public virtual DbSet<tblUser> tblUsers { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
