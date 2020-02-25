@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +12,15 @@ namespace DatabaseManipulator
         public Data data { get; set; }
     }
 
+   
     public class Data
     {
-        public Entitymessage[] EntityMessage { get; set; }
         public string ConnectionString { get; set; }
+        public string Table { get; set; }
+        public string Criteria { get; set; }
+        public string CriteriaValue { get; set; }
+        public CriteriaOperator[] CriteriaOperators { get; set; }
+        public Column[] Columns { get; set; }
     }
 
     public class Entitymessage
@@ -24,4 +30,13 @@ namespace DatabaseManipulator
         public string Value { get; set; }
     }
 
+    public class CriteriaOperator
+    {
+        public string Operator { get; set; }
+    }
+
+    public class Column
+    {
+        public dynamic Values { get; set; }
+    }
 }

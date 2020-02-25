@@ -13,6 +13,8 @@ using System.Data.Entity.Core.EntityClient;
 using System.Data.Entity.Core;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
+using System.Collections;
+using Json.Net;
 
 namespace DatabaseManipulator
 {
@@ -59,26 +61,33 @@ namespace DatabaseManipulator
 
                 var jsonData = JsonConvert.DeserializeObject<RootObject>(files);
 
-                var messages = jsonData.data.EntityMessage;
+
+                var messages = jsonData.data.Columns;
                 var connString = jsonData.data.ConnectionString;
                 foreach (var item in messages)
                 {
-                    string table = item.Table;
-                    string column = item.Column;
-                    string value = item.Value;
+                    string table = jsonData.data.Table;
+                    //string column = item.Column;
+                    //string value = item.Value;
 
                     try
                     {
+                        string updateCols = string.Empty;
 
-                        var query = string.Format("insert into {0} ({1}) Values ('{2}');", table, column, value);
-
-                        using (SqlConnection conn = new SqlConnection(connString))
-                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        foreach (var col in jsonData.data.Columns)
                         {
-                            conn.Open();
-                            cmd.ExecuteNonQuery();
-                            conn.Close();
+                            updateCols += col.Values.Split(':')[0]+" ";
                         }
+                        Console.WriteLine(updateCols);
+                        //var query = string.Format("Update {0} set({1}) Values ('{2}');", table, column, value);
+
+                        //using (SqlConnection conn = new SqlConnection(connString))
+                        //using (SqlCommand cmd = new SqlCommand(query, conn))
+                        //{
+                        //    conn.Open();
+                        //    cmd.ExecuteNonQuery();
+                        //    conn.Close();
+                        //}
 
                         Console.WriteLine("Message Processed Successfully");
 
