@@ -22,8 +22,6 @@ namespace DatabaseManipulator
     {
         
         static string path;
-     
-
         static void Main(string[] args)
         {
             System.Timers.Timer aTimer = new System.Timers.Timer();
@@ -72,25 +70,26 @@ namespace DatabaseManipulator
 
                 for (int i = 0; i < criterias.Length; i++)
                 {
-                    criteriaForUpdate += String.Format(" and {0} {1} {2} ",jsonData.data.Criteria,jsonData.data.CriteriaOperators[i],jsonData.data.CriteriaValue);
+                   
+                    criteriaForUpdate += String.Format(" and {0} {1} {2} ",jsonData.data.Criteria, criterias[i], jsonData.data.CriteriaValue);
                 }
 
                 for (int i = 0; i < jsonData.data.Properties.Length; i++)
                 {
                     if (i+1== jsonData.data.Properties.Length)
                     {
-                        updateStructure += string.Format(" {0} = {1} ", jsonData.data.Properties[i], jsonData.data.Values[i]);
+                        updateStructure += string.Format(" {0} = '{1}' ", jsonData.data.Properties[i], jsonData.data.Values[i]);
                     }
                     else
                     {
-                        updateStructure += string.Format(" {0} = {1}, ", jsonData.data.Properties[i], jsonData.data.Values[i]);
+                        updateStructure += string.Format(" {0} = '{1}', ", jsonData.data.Properties[i], jsonData.data.Values[i]);
                     }
                     
                 }
 
                 try
                 {
-                    var query = string.Format("Update {0} set({1}) {2} ;", jsonData.data.Table, updateStructure, criteriaForUpdate);
+                    var query = string.Format("Update {0} set {1} {2} ;", jsonData.data.Table, updateStructure, criteriaForUpdate);
 
                     using (SqlConnection conn = new SqlConnection(connString))
                     using (SqlCommand cmd = new SqlCommand(query, conn))
