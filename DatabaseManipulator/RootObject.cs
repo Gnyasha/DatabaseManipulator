@@ -7,36 +7,24 @@ using System.Threading.Tasks;
 
 namespace DatabaseManipulator
 {
+
     public class RootObject
     {
         public Data data { get; set; }
     }
 
-   
     public class Data
     {
         public string ConnectionString { get; set; }
         public string Table { get; set; }
         public string Criteria { get; set; }
         public string CriteriaValue { get; set; }
-        public CriteriaOperator[] CriteriaOperators { get; set; }
-        public Column[] Columns { get; set; }
+        public string CriteriaOperators { get; set; }
+        public string[] Properties { get; set; }
+        public string[] Values { get; set; }
     }
 
-    public class Entitymessage
-    {
-        public string Table { get; set; }
-        public string Column { get; set; }
-        public string Value { get; set; }
-    }
 
-    public class CriteriaOperator
-    {
-        public string Operator { get; set; }
-    }
 
-    public class Column
-    {
-        public dynamic Values { get; set; }
-    }
+
 }

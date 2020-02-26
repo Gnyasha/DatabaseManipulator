@@ -61,43 +61,53 @@ namespace DatabaseManipulator
 
                 var jsonData = JsonConvert.DeserializeObject<RootObject>(files);
 
+                
 
-                var messages = jsonData.data.Columns;
+               
                 var connString = jsonData.data.ConnectionString;
-                foreach (var item in messages)
+
+                string updateStructure = " ";
+                string criteriaForUpdate = " where 1=1 ";
+                var criterias = jsonData.data.CriteriaOperators.Split(',');
+
+                for (int i = 0; i < criterias.Length; i++)
                 {
-                    string table = jsonData.data.Table;
-                    //string column = item.Column;
-                    //string value = item.Value;
+                    criteriaForUpdate += String.Format(" and {0} {1} {2} ",jsonData.data.Criteria,jsonData.data.CriteriaOperators[i],jsonData.data.CriteriaValue);
+                }
 
-                    try
+                for (int i = 0; i < jsonData.data.Properties.Length; i++)
+                {
+                    if (i+1== jsonData.data.Properties.Length)
                     {
-                        string updateCols = string.Empty;
-
-                        foreach (var col in jsonData.data.Columns)
-                        {
-                            updateCols += col.Values.Split(':')[0]+" ";
-                        }
-                        Console.WriteLine(updateCols);
-                        //var query = string.Format("Update {0} set({1}) Values ('{2}');", table, column, value);
-
-                        //using (SqlConnection conn = new SqlConnection(connString))
-                        //using (SqlCommand cmd = new SqlCommand(query, conn))
-                        //{
-                        //    conn.Open();
-                        //    cmd.ExecuteNonQuery();
-                        //    conn.Close();
-                        //}
-
-                        Console.WriteLine("Message Processed Successfully");
-
+                        updateStructure += string.Format(" {0} = {1} ", jsonData.data.Properties[i], jsonData.data.Values[i]);
                     }
-                    catch (Exception)
+                    else
                     {
-                        Console.WriteLine("An error occured while updating data");
+                        updateStructure += string.Format(" {0} = {1}, ", jsonData.data.Properties[i], jsonData.data.Values[i]);
                     }
+                    
+                }
+
+                try
+                {
+                    var query = string.Format("Update {0} set({1}) {2} ;", jsonData.data.Table, updateStructure, criteriaForUpdate);
+
+                    using (SqlConnection conn = new SqlConnection(connString))
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                    }
+
+                    Console.WriteLine("Message Processed Successfully");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("An error occured while updating data : Message " + ex.Message);
 
                 }
+               
 
                 Console.WriteLine("Message process completed");
 
