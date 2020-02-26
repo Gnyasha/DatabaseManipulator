@@ -1,22 +1,12 @@
 {
   "data": {
     "ConnectionString": "Data Source=.;Initial Catalog=DataManipulator;Integrated Security=True",
-    "EntityMessage": [
-      {
-        "Table": "tblUsers",
-        "Column": "FirstName",
-        "Value": "Goodson"
-      },
-      {
-        "Table": "tblUsers",
-        "Column": "FirstName",
-        "Value": "Nyasha"
-      },
-      {
-        "Table": "tblUsers",
-        "Column": "FirstName",
-        "Value": "Joseph"
-      }
-    ]
+	"Table":"tblUsers",
+	"Criteria":"Id",
+	"CriteriaValue":"1",
+	"CriteriaOperators": "like,=",
+    "Properties": ["FirstName","LastName","Age"],
+	"Values":["Goodson","Nyasha","30"]
+         
   }
 }
