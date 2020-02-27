@@ -13,15 +13,34 @@ namespace DatabaseManipulator
         public Data data { get; set; }
     }
 
+
+    public class Rootobject
+    {
+        public Data data { get; set; }
+    }
+
     public class Data
     {
         public string ConnectionString { get; set; }
         public string Table { get; set; }
-        public string Criteria { get; set; }
-        public string CriteriaValue { get; set; }
-        public string CriteriaOperators { get; set; }
-        public string[] Properties { get; set; }
-        public string[] Values { get; set; }
+        public Criterion[] Criteria { get; set; }
+        public Criteriaoperator[] CriteriaOperators { get; set; }
+        public Propertyvalue[] PropertyValues { get; set; }
+    }
+
+    public class Criterion
+    {
+      
+    }
+
+    public class Criteriaoperator
+    {
+      
+    }
+
+    public class Propertyvalue
+    {
+       
     }
 
 

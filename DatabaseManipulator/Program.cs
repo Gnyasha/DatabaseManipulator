@@ -47,6 +47,8 @@ namespace DatabaseManipulator
             }
         }
 
+
+
         private static void ReadFiles(string filePath)
         {
             //check all files
@@ -59,33 +61,38 @@ namespace DatabaseManipulator
 
                 var jsonData = JsonConvert.DeserializeObject<RootObject>(files);
 
-                
 
-               
+                dynamic parsedObject = JsonConvert.DeserializeObject("{ data: { PropertyValues: } }");
+                foreach (dynamic entry in parsedObject)
+                {
+                    string name = entry.Name; // "test"
+                    dynamic value = entry.Value; // { inner: "text-value" }
+                }
+
                 var connString = jsonData.data.ConnectionString;
 
-                string updateStructure = " ";
-                string criteriaForUpdate = " where 1=1 ";
-                var criterias = jsonData.data.CriteriaOperators.Split(',');
+                //string updateStructure = " ";
+                //string criteriaForUpdate = " where 1=1 ";
+                //var criterias = jsonData.data.CriteriaOperators.Split(',');
 
-                for (int i = 0; i < criterias.Length; i++)
-                {
+                //for (int i = 0; i < criterias.Length; i++)
+                //{
                    
-                    criteriaForUpdate += String.Format(" and {0} {1} {2} ",jsonData.data.Criteria, criterias[i], jsonData.data.CriteriaValue);
-                }
+                //    criteriaForUpdate += String.Format(" and {0} {1} {2} ",jsonData.data.Criteria, criterias[i], jsonData.data.CriteriaValue);
+                //}
 
-                for (int i = 0; i < jsonData.data.Properties.Length; i++)
-                {
-                    if (i+1== jsonData.data.Properties.Length)
-                    {
-                        updateStructure += string.Format(" {0} = '{1}' ", jsonData.data.Properties[i], jsonData.data.Values[i]);
-                    }
-                    else
-                    {
-                        updateStructure += string.Format(" {0} = '{1}', ", jsonData.data.Properties[i], jsonData.data.Values[i]);
-                    }
+                //for (int i = 0; i < jsonData.data.Properties.Length; i++)
+                //{
+                //    if (i+1== jsonData.data.Properties.Length)
+                //    {
+                //        updateStructure += string.Format(" {0} = '{1}' ", jsonData.data.Properties[i], jsonData.data.Values[i]);
+                //    }
+                //    else
+                //    {
+                //        updateStructure += string.Format(" {0} = '{1}', ", jsonData.data.Properties[i], jsonData.data.Values[i]);
+                //    }
                     
-                }
+                //}
 
                 try
                 {
