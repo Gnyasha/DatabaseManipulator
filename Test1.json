@@ -1,12 +1,24 @@
 {
-  "data": {
+  
     "ConnectionString": "Data Source=.;Initial Catalog=DataManipulator;Integrated Security=True",
-	"Table":"tblUsers",
-	"Criteria":"Id",
-	"CriteriaValue":"1",
-	"CriteriaOperators": "like,=",
-    "Properties": ["FirstName","LastName","Age"],
-	"Values":["Goodson","Nyasha","30"]
-         
-  }
+    "Table": "tblUsers",
+    "Criteria": 
+	{ 
+		"Id":"1", 
+		"Name":"Goodson" 
+		
+	},
+	 "CriteriaOperators": 
+	{ 
+		"Id":"=", 
+		"Name":"like" 
+		
+	},
+	"PropertyValues": 
+	{ 
+		"FirstName":"Goodson", 
+		"LastName":"Nyasha", 
+		"Age":"30"
+	}
+
 }
