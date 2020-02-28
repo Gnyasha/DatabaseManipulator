@@ -4,20 +4,20 @@
     "Criteria": 
 	{ 
 		"Id":"1", 
-		"Name":"Goodson" 
+		"FirstName":"Goodson" 
 		
 	},
 	 "CriteriaOperators": 
 	{ 
 		"Id":"=", 
-		"Name":"like" 
+		"FirstName":"like" 
 		
 	},
 	"PropertyValues": 
 	{ 
 		"FirstName":"Goodson", 
 		"LastName":"Nyasha", 
-		"Age":"30"
+		"Age":"35"
 	}
   
 }
