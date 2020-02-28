@@ -7,29 +7,33 @@ using System.Threading.Tasks;
 
 namespace DatabaseManipulator
 {
+
     public class RootObject
     {
         public string ConnectionString { get; set; }
         public string Table { get; set; }
-        public Criterion[] Criteria { get; set; }
-        public Criteriaoperator[] CriteriaOperators { get; set; }
+        public Group[] Groups { get; set; }
         public Propertyvalue[] PropertyValues { get; set; }
     }
 
-    public class Criterion
+    public class Group
     {
-
+        public Criteria[] Criterias { get; set; }
+        public string Concatenator { get; set; }
     }
 
-    public class Criteriaoperator
+    public class Criteria
     {
-
+        public string Field { get; set; }
+        public string Value { get; set; }
+        public string Operator { get; set; }
+        public string Concatenator { get; set; }
     }
 
     public class Propertyvalue
     {
-
+        public string Column { get; set; }
+        public string Value { get; set; }
     }
-
 
 }

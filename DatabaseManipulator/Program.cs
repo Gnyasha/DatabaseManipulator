@@ -39,15 +39,15 @@ namespace DatabaseManipulator
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            ReadFiles(path);//TODO - Make this method asyncronious
-                            //try
-                            //{
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("A critical error occured. Please contact your Systems Administrator : Error " + ex.Message);
-            //}
+           
+            try
+            {
+                ReadFiles(path);//TODO - Make this method asyncronious
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("A critical error occured. Please contact your Systems Administrator : Error " + ex.Message);
+            }
         }
 
 
@@ -62,48 +62,67 @@ namespace DatabaseManipulator
                 string files = File.ReadAllText(file);
                 string fileName = GetLastParts(file, "\\", 1);
 
-                //var jsonData = JsonConvert.DeserializeObject<RootObject>(files);
-                var json = JObject.Parse(files);
+                var jsonData = JsonConvert.DeserializeObject<RootObject>(files);
 
+                string connectionString = jsonData.ConnectionString;
+                string table = jsonData.Table;
 
+                string setWhereString = " where ";
+                
+                string updateValues = string.Empty;
 
-                string connString = json["ConnectionString"].ToObject<string>();
-                string table = json["Table"].ToObject<string>();
-
-
-                string criteriaForUpdate = " where 1=1 ";
-                string updateStructure = " ";
-
-                var criterions = json["Criteria"].ToObject<Dictionary<string, string>>().ToList();
-                var criteriaOperators = json["CriteriaOperators"].ToObject<Dictionary<string, string>>().ToList();
-                var properties = json["PropertyValues"].ToObject<Dictionary<string, string>>().ToList();
-
-                int i = 0;
-                foreach (var item in criterions)
+                int j = 0;
+                foreach (var group in jsonData.Groups )
                 {
-                    criteriaForUpdate += String.Format(" and {0} {1} '{2}' ", criterions[i].Key, criteriaOperators[i].Value, criterions[i].Value);
-                    i++;
+                    string concatenator = "";
+                    int i = 0;
+                    foreach (var criteria in group.Criterias)
+                    {
+
+                        concatenator = string.Empty;
+                        if (i+1 < group.Criterias.Length)
+                        {
+                            concatenator = group.Criterias[i + 1].Concatenator;
+                        }
+                        string whereClause = string.Format(" {0} {1} '{2}' {3}", criteria.Field, criteria.Operator, criteria.Value,concatenator);
+                        setWhereString += whereClause;
+                        i++;
+                    }
+
+                    concatenator = string.Empty;
+                    if (j + 1 < group.Criterias.Length)
+                    {
+                        concatenator = jsonData.Groups[j+1].Concatenator;
+                    }
+
+                    setWhereString += string.Format(" {0} ",concatenator);
+
+                    j++;
                 }
 
-                i = 0;
-                foreach (var item in properties)
+                j = 0;
+                foreach (var item in jsonData.PropertyValues)
                 {
-                    if (i + 1 == properties.Count)
+                    string values = string.Empty;
+                    if (j+1<jsonData.PropertyValues.Length)
                     {
-                        updateStructure += string.Format(" {0} = '{1}' ", properties[i].Key, properties[i].Value);
+                         values = string.Format(" {0} = '{1}', ", item.Column, item.Value);
                     }
                     else
                     {
-                        updateStructure += string.Format(" {0} = '{1}', ", properties[i].Key, properties[i].Value);
+                         values = string.Format(" {0} = '{1}' ", item.Column, item.Value);
                     }
-                    i++;
+                   
+                    updateValues += values;
+                    j++;
                 }
+
 
                 try
                 {
-                    var query = string.Format("Update {0} set {1} {2} ;", table, updateStructure, criteriaForUpdate);
+                    var query = string.Format("Update {0} set {1} {2} ;", table,  updateValues, setWhereString);
 
-                    using (SqlConnection conn = new SqlConnection(connString))
+                    using (SqlConnection conn = new SqlConnection(connectionString))
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         conn.Open();
@@ -118,7 +137,6 @@ namespace DatabaseManipulator
                     Console.WriteLine("An error occured while updating data : Message " + ex.Message);
 
                 }
-
 
                 Console.WriteLine("Message process completed");
 
