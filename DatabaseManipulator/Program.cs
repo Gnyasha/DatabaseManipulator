@@ -39,7 +39,7 @@ namespace DatabaseManipulator
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-           
+
             try
             {
                 ReadFiles(path);//TODO - Make this method asyncronious
@@ -68,34 +68,27 @@ namespace DatabaseManipulator
                 string table = jsonData.Table;
 
                 string setWhereString = " where ";
-                
+
                 string updateValues = string.Empty;
 
                 int j = 0;
-                foreach (var group in jsonData.Groups )
+                foreach (var group in jsonData.Groups)
                 {
                     string concatenator = "";
                     int i = 0;
                     foreach (var criteria in group.Criterias)
                     {
 
-                        concatenator = string.Empty;
-                        if (i+1 < group.Criterias.Length)
-                        {
-                            concatenator = group.Criterias[i + 1].Concatenator;
-                        }
-                        string whereClause = string.Format(" {0} {1} '{2}' {3}", criteria.Field, criteria.Operator, criteria.Value,concatenator);
+
+                        concatenator = (i + 1 < group.Criterias.Length) ? group.Criterias[i + 1].Concatenator : "";
+
+                        string whereClause = string.Format(" {0} {1} '{2}' {3}", criteria.Field, criteria.Operator, criteria.Value, concatenator);
                         setWhereString += whereClause;
                         i++;
                     }
 
-                    concatenator = string.Empty;
-                    if (j + 1 < group.Criterias.Length)
-                    {
-                        concatenator = jsonData.Groups[j+1].Concatenator;
-                    }
-
-                    setWhereString += string.Format(" {0} ",concatenator);
+                    concatenator = (j + 1 < group.Criterias.Length) ? jsonData.Groups[j + 1].Concatenator : "";
+                    setWhereString += string.Format(" {0} ", concatenator);
 
                     j++;
                 }
@@ -103,16 +96,11 @@ namespace DatabaseManipulator
                 j = 0;
                 foreach (var item in jsonData.PropertyValues)
                 {
-                    string values = string.Empty;
-                    if (j+1<jsonData.PropertyValues.Length)
-                    {
-                         values = string.Format(" {0} = '{1}', ", item.Column, item.Value);
-                    }
-                    else
-                    {
-                         values = string.Format(" {0} = '{1}' ", item.Column, item.Value);
-                    }
-                   
+
+                    var comma = (j + 1 < jsonData.PropertyValues.Length) ? "," : "";
+
+                    string values = string.Format(" {0} = '{1}' {2} ", item.Column, item.Value, comma);
+
                     updateValues += values;
                     j++;
                 }
@@ -120,7 +108,7 @@ namespace DatabaseManipulator
 
                 try
                 {
-                    var query = string.Format("Update {0} set {1} {2} ;", table,  updateValues, setWhereString);
+                    var query = string.Format("Update {0} set {1} {2} ;", table, updateValues, setWhereString);
 
                     using (SqlConnection conn = new SqlConnection(connectionString))
                     using (SqlCommand cmd = new SqlCommand(query, conn))
