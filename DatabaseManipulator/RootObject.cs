@@ -7,19 +7,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseManipulator
 {
-
     public class RootObject
-    {
-        public Data data { get; set; }
-    }
-
-
-    public class Rootobject
-    {
-        public Data data { get; set; }
-    }
-
-    public class Data
     {
         public string ConnectionString { get; set; }
         public string Table { get; set; }
@@ -30,20 +18,18 @@ namespace DatabaseManipulator
 
     public class Criterion
     {
-      
+
     }
 
     public class Criteriaoperator
     {
-      
+
     }
 
     public class Propertyvalue
     {
-       
+
     }
-
-
 
 
 }
