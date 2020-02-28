@@ -13,7 +13,7 @@ namespace DatabaseManipulator
         public string ConnectionString { get; set; }
         public string Table { get; set; }
         public Group[] Groups { get; set; }
-        public Propertyvalue[] PropertyValues { get; set; }
+        public PropertyValue[] PropertyValues { get; set; }
     }
 
     public class Group
@@ -30,7 +30,7 @@ namespace DatabaseManipulator
         public string Concatenator { get; set; }
     }
 
-    public class Propertyvalue
+    public class PropertyValue
     {
         public string Column { get; set; }
         public string Value { get; set; }
