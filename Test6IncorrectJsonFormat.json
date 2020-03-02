@@ -1,0 +1,44 @@
+{
+  "ConnectionString": "Data SourceZZZZZ=.;Initial Catalog=DataManipulator;Integrated Security=True",
+  "Table": "tblUsers",
+  "Groups": [
+    {
+      "Criterias": [[
+        {
+          "Field": "Ids",
+          "Value": "123",
+          "Operator": "="
+        },
+        {
+          "Field": "FirstName" "Field": "FirstName",
+          "Value": "%Paulo%"   "Value": "%Paulo%",
+          "Operator": "like",
+          "Concatenator": "or"
+        }
+      ]
+    },
+    {
+      "Criterias": [
+        {
+          "Field": "Id",
+          "Value": "123",
+          "Operator": "="
+        },
+        {
+          "Field": "FirstNames",
+          "Value": "%Paulo%",
+          "Operator": "like",
+          "Concatenator": "And"
+        }
+      ],
+      "Concatenator": "And"
+    }
+  ],
+  "PropertyValues": [
+    {
+      "Column": "FirstName",
+      "Value": "Goodson"
+    },
+    
+  ]]
+}
