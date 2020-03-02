@@ -78,9 +78,7 @@ namespace DatabaseManipulator
                     int i = 0;
                     foreach (var criteria in group.Criterias)
                     {
-
-
-                        concatenator = (i + 1 < group.Criterias.Length) ? group.Criterias[i + 1].Concatenator : "";
+                        concatenator = (i + 1 < group.Criterias.Length) ? group.Criterias[i + 1].Concatenator : "";//Chec
 
                         string whereClause = string.Format(" {0} {1} '{2}' {3}", criteria.Field, criteria.Operator, criteria.Value, concatenator);
                         setWhereString += whereClause;
