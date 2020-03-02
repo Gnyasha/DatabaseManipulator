@@ -1,0 +1,63 @@
+{
+  "ConnectionString": "Data Source=.;Initial Catalog=DataManipulator;Integrated Security=True",
+  "Table": "tblUsers",
+  "Groups": [
+    {
+      "Criterias": [
+        {
+          "Field": "Id",
+          "Value": "123",
+          "Operator": "="
+        },
+        {
+          "Field": "FirstName",
+          "Value": "%Paulo%",
+          "Operator": "like",
+          "Concatenator": "or"
+        },
+		{
+          "Field": "FirstName",
+          "Value": "%Paulo%",
+          "Operator": "like",
+          "Concatenator": "or"
+        }
+      ]
+    },
+    {
+      "Criterias": [
+        {
+          "Field": "Id",
+          "Value": "123",
+          "Operator": "="
+        },
+        {
+          "Field": "FirstName",
+          "Value": "%Paulo%",
+          "Operator": "like",
+          "Concatenator": "And"
+        },
+		{
+          "Field": "FirstName",
+          "Value": "%Paulo%",
+          "Operator": "like",
+          "Concatenator": "And"
+        }
+      ],
+      "Concatenator": "And"
+    }
+  ],
+  "PropertyValues": [
+    {
+      "Column": "FirstName",
+      "Value": "Goodson"
+    },
+    {
+      "Column": "LastName",
+      "Value": "Nyasha"
+    },
+    {
+      "Column": "Age",
+      "Value": "35"
+    }
+  ]
+}
