@@ -46,8 +46,8 @@ namespace DatabaseManipulator
             }
             catch (Exception ex)
             {
-                throw;
-                //Console.WriteLine("A critical error occured. Please contact your Systems Administrator : Error " + ex.Message);
+                
+                Console.WriteLine("A critical error occured. Please contact your Systems Administrator : Error " + ex.Message);
             }
         }
 
