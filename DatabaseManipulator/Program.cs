@@ -46,7 +46,8 @@ namespace DatabaseManipulator
             }
             catch (Exception ex)
             {
-                Console.WriteLine("A critical error occured. Please contact your Systems Administrator : Error " + ex.Message);
+                throw;
+                //Console.WriteLine("A critical error occured. Please contact your Systems Administrator : Error " + ex.Message);
             }
         }
 
@@ -85,7 +86,7 @@ namespace DatabaseManipulator
                         i++;
                     }
 
-                    concatenator = (j + 1 < group.Criterias.Length) ? jsonData.Groups[j + 1].Concatenator : "";
+                    concatenator = (j + 1 < group.Criterias.Length && j + 1 < jsonData.Groups.Length) ? jsonData.Groups[j + 1].Concatenator : "";
                     setWhereString += string.Format(" {0} ", concatenator);
 
                     j++;
